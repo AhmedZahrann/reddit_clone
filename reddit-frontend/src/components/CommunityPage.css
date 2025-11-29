@@ -53,3 +53,80 @@
   font-size: 14px;
   color: #777;
 }
+
+.post-card {
+  display: flex;
+  gap: 12px;
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.vote-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40px;
+}
+
+.vote-section button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.post-info {
+  flex: 1;
+}
+
+.comments-count {
+  font-size: 12px;
+  color: #777;
+  margin-left: 6px;
+}
+
+.post {
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.vote-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40px;
+}
+
+.vote-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.vote-count {
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.post-content {
+  flex: 1;
+}
+
+.post-meta {
+  color: gray;
+  font-size: 13px;
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+}
