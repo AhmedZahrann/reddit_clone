@@ -27,14 +27,14 @@ function App() {
   const token = localStorage.getItem("token");
 
   const fetchCommunities = () => {
-    fetch(`${API_URL}/communities`)
+    fetch(`${API_URL}/apicommunities`)
       .then((res) => res.json())
       .then((data) => setCommunities(data))
       .catch(() => setCommunities([]));
   };
 
   const fetchAllPosts = useCallback(() => {
-    fetch(`${API_URL}/posts?sort=${postSort}`)
+    fetch(`${API_URL}/api/posts?sort=${postSort}`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -47,7 +47,7 @@ function App() {
   // Fetch logged-in user and communities
   useEffect(() => {
     if (token) {
-      fetch(`${API_URL}/auth/me`, {
+      fetch(`${API_URL}/api/auth/me`, {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((res) => res.json())
@@ -73,7 +73,7 @@ function App() {
 
   const refreshUser = useCallback(() => {
     if (token) {
-      fetch(`${API_URL}/auth/me`, {
+      fetch(`${API_URL}/api/auth/me`, {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((res) => res.json())
@@ -96,7 +96,7 @@ function App() {
 
   const openUserProfile = async (userId) => {
     try {
-      const res = await fetch(`${API_URL}/auth/user/${userId}`);
+      const res = await fetch(`${API_URL}/api/auth/user/${userId}`);
       const data = await res.json();
       if (res.ok) {
         setViewingUser(data.user);
@@ -111,7 +111,7 @@ function App() {
   };
 
   const openCommunity = (community) => {
-    fetch(`${API_URL}/communities/${community._id}`)
+    fetch(`${API_URL}/api/communities/${community._id}`)
       .then((res) => res.json())
       .then((data) => {
         setSelectedCommunity(data);
@@ -125,7 +125,7 @@ function App() {
       // Store current page before opening post
       setPreviousPage(page);
       // Fetch full post with populated comments
-      const res = await fetch(`${API_URL}/posts/${post._id}`);
+      const res = await fetch(`${API_URL}/api/posts/${post._id}`);
       const data = await res.json();
       if (!res.ok) {
         alert(data.error || "Failed to load post");
@@ -160,11 +160,11 @@ function App() {
     const searchTimeout = setTimeout(async () => {
       try {
         // Fetch posts and communities
-        const postsRes = await fetch(`${API_URL}/posts/search?q=${encodeURIComponent(searchQuery)}`);
+        const postsRes = await fetch(`${API_URL}/api/posts/search?q=${encodeURIComponent(searchQuery)}`);
         const postsData = await postsRes.json();
         
         // Fetch users
-        const usersRes = await fetch(`${API_URL}/auth/search?q=${encodeURIComponent(searchQuery)}`);
+        const usersRes = await fetch(`${API_URL}/api/auth/search?q=${encodeURIComponent(searchQuery)}`);
         const usersData = await usersRes.json();
         
         if (postsRes.ok && usersRes.ok) {
@@ -185,7 +185,7 @@ function App() {
   // CREATE COMMUNITY
   const createCommunity = async (name, description = "") => {
     try {
-      const res = await fetch(`${API_URL}/communities`, {
+      const res = await fetch(`${API_URL}/api/communities`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -209,7 +209,7 @@ function App() {
   // JOIN / LEAVE COMMUNITY
   const toggleMembership = async (communityId) => {
     try {
-      const res = await fetch(`${API_URL}/communities/${communityId}/join`, {
+      const res = await fetch(`${API_URL}/api/communities/${communityId}/join`, {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -240,7 +240,7 @@ function App() {
         alert("Please add content or an image");
         return;
       }
-      const res = await fetch(`${API_URL}/posts`, {
+      const res = await fetch(`${API_URL}/api/posts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -264,7 +264,7 @@ function App() {
   // VOTE POST
   const votePost = useCallback(async (postId, vote) => {
     try {
-      const res = await fetch(`${API_URL}/posts/${postId}/vote`, {
+      const res = await fetch(`${API_URL}/api/posts/${postId}/vote`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -279,12 +279,12 @@ function App() {
       }
       // Refresh community posts and selected post
       if (selectedCommunity) {
-        const commRes = await fetch(`${API_URL}/communities/${selectedCommunity._id}`);
+        const commRes = await fetch(`${API_URL}/api/communities/${selectedCommunity._id}`);
         const commData = await commRes.json();
         setSelectedCommunity(commData);
       }
       if (selectedPost) {
-        const postRes = await fetch(`${API_URL}/posts/${selectedPost._id}`);
+        const postRes = await fetch(`${API_URL}/api/posts/${selectedPost._id}`);
         const postData = await postRes.json();
         setSelectedPost(postData);
       }
@@ -300,7 +300,7 @@ function App() {
   // ADD COMMENT
   const addComment = useCallback(async (postId, text) => {
     try {
-      const res = await fetch(`${API_URL}/posts/${postId}/comment`, {
+      const res = await fetch(`${API_URL}/api/posts/${postId}/comment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -315,12 +315,12 @@ function App() {
       }
       // Refresh post and community
       if (selectedCommunity) {
-        const commRes = await fetch(`${API_URL}/communities/${selectedCommunity._id}`);
+        const commRes = await fetch(`${API_URL}/api/communities/${selectedCommunity._id}`);
         const commData = await commRes.json();
         setSelectedCommunity(commData);
       }
       if (selectedPost) {
-        const postRes = await fetch(`${API_URL}/posts/${selectedPost._id}`);
+        const postRes = await fetch(`${API_URL}/api/posts/${selectedPost._id}`);
         const postData = await postRes.json();
         setSelectedPost(postData);
       }
@@ -332,7 +332,7 @@ function App() {
   // EDIT POST
   const editPost = useCallback(async (postId, title, content) => {
     try {
-      const res = await fetch(`${API_URL}/posts/${postId}`, {
+      const res = await fetch(`${API_URL}/api/posts/${postId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -347,12 +347,12 @@ function App() {
       }
       // Refresh post and community
       if (selectedCommunity) {
-        const commRes = await fetch(`${API_URL}/communities/${selectedCommunity._id}`);
+        const commRes = await fetch(`${API_URL}/api/communities/${selectedCommunity._id}`);
         const commData = await commRes.json();
         setSelectedCommunity(commData);
       }
       if (selectedPost) {
-        const postRes = await fetch(`${API_URL}/posts/${selectedPost._id}`);
+        const postRes = await fetch(`${API_URL}/api/posts/${selectedPost._id}`);
         const postData = await postRes.json();
         setSelectedPost(postData);
       }
@@ -364,7 +364,7 @@ function App() {
   // DELETE POST
   const deletePost = useCallback(async (postId) => {
     try {
-      const res = await fetch(`${API_URL}/posts/${postId}`, {
+      const res = await fetch(`${API_URL}/api/posts/${postId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -377,7 +377,7 @@ function App() {
       }
       // Go back to community or home
       if (selectedCommunity) {
-        const commRes = await fetch(`${API_URL}/communities/${selectedCommunity._id}`);
+        const commRes = await fetch(`${API_URL}/api/communities/${selectedCommunity._id}`);
         const commData = await commRes.json();
         setSelectedCommunity(commData);
         setPage("community");
@@ -395,7 +395,7 @@ function App() {
   const onSaveBio = async (newBio) => {
     try {
       if (!token) return;
-      const res = await fetch(`${API_URL}/auth/update-bio`, {
+      const res = await fetch(`${API_URL}/api/auth/update-bio`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

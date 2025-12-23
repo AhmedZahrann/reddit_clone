@@ -12,7 +12,8 @@ export default function LoginPage({ onSignUpClick, onSuccess }) {
     setError("");
 
     try {
-      const res = await fetch(`${API_URL}/auth/login`, {
+      // ✅ FIXED: added /api
+      const res = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ emailOrUsername, password }),
@@ -25,16 +26,20 @@ export default function LoginPage({ onSignUpClick, onSuccess }) {
         return;
       }
 
+      // save token
       localStorage.setItem("token", data.token);
 
-      // fetch user data after login
-      const userRes = await fetch(`${API_URL}/auth/me`, {
-        headers: { Authorization: `Bearer ${data.token}` },
+      // ✅ FIXED: added /api
+      const userRes = await fetch(`${API_URL}/api/auth/me`, {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
       });
+
       const userData = await userRes.json();
 
-      if (userData.error) {
-        setError(userData.error);
+      if (!userRes.ok) {
+        setError(userData.error || "Failed to load user");
         return;
       }
 
@@ -67,12 +72,18 @@ export default function LoginPage({ onSignUpClick, onSuccess }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit" className="login-submit">Log In</button>
+          <button type="submit" className="login-submit">
+            Log In
+          </button>
+
           {error && <p className="error-text">{error}</p>}
         </form>
 
         <p className="signup-text">
-          New here? <span className="signup-link" onClick={onSignUpClick}>Sign Up</span>
+          New here?{" "}
+          <span className="signup-link" onClick={onSignUpClick}>
+            Sign Up
+          </span>
         </p>
       </div>
     </div>

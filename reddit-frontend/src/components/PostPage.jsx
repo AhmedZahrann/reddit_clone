@@ -41,7 +41,7 @@ const PostPage = ({ post, onBack, onAddComment, user, onDeletePost, onEditPost, 
     const refreshPost = async () => {
       if (!currentPost?._id) return;
       try {
-        const res = await fetch(`${API_URL}/posts/${currentPost._id}?sort=${commentSort}`);
+        const res = await fetch(`${API_URL}/api/posts/${currentPost._id}?sort=${commentSort}`);
         const data = await res.json();
         if (res.ok) {
           setCurrentPost(data);
@@ -81,7 +81,7 @@ const PostPage = ({ post, onBack, onAddComment, user, onDeletePost, onEditPost, 
     
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${API_URL}/posts/${currentPost._id}/comment`, {
+      const res = await fetch(`${API_URL}/api/posts/${currentPost._id}/comment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -110,7 +110,7 @@ const PostPage = ({ post, onBack, onAddComment, user, onDeletePost, onEditPost, 
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${API_URL}/posts/${currentPost._id}/comment`, {
+      const res = await fetch(`${API_URL}/api/posts/${currentPost._id}/comment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -137,7 +137,7 @@ const PostPage = ({ post, onBack, onAddComment, user, onDeletePost, onEditPost, 
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${API_URL}/posts/${currentPost._id}/comment/${commentId}/vote`, {
+      const res = await fetch(`${API_URL}/api/posts/${currentPost._id}/comment/${commentId}/vote`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -157,7 +157,7 @@ const PostPage = ({ post, onBack, onAddComment, user, onDeletePost, onEditPost, 
   const handleEditComment = async (commentId, newText, isReply = false, parentCommentId = null) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${API_URL}/posts/${currentPost._id}/comment/${commentId}`, {
+      const res = await fetch(`${API_URL}/api/posts/${currentPost._id}/comment/${commentId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -180,7 +180,7 @@ const PostPage = ({ post, onBack, onAddComment, user, onDeletePost, onEditPost, 
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${API_URL}/posts/${currentPost._id}/comment/${commentId}`, {
+      const res = await fetch(`${API_URL}/api/posts/${currentPost._id}/comment/${commentId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -210,7 +210,7 @@ const PostPage = ({ post, onBack, onAddComment, user, onDeletePost, onEditPost, 
     setIsSummarizing(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${API_URL}/posts/${currentPost._id}/summarize`, {
+      const res = await fetch(`${API_URL}/api/posts/${currentPost._id}/summarize`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
