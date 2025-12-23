@@ -32,18 +32,19 @@ const Sidebar = ({
       </div>
 
       {/* Trending Communities */}
-      <div className="sidebar-section">
-        <h2 className="sidebar-section-title">Trending Communities</h2>
-        {communities.map((c) => (
-          <button 
-            key={c.id} 
-            className="sidebar-btn" 
-            onClick={() => onSelectCommunity(c)}
-          >
-            r/{c.name}
-          </button>
-        ))}
-      </div>
+<div className="sidebar-section">
+  <h2 className="sidebar-section-title">Trending Communities</h2>
+  {communities.map((c) => (
+    <button 
+      key={c._id}
+      className="sidebar-btn" 
+      onClick={() => onSelectCommunity(c)}
+    >
+      r/{c.name}
+    </button>
+  ))}
+</div>
+
 
       {/* User Section */}
       <div className="sidebar-section">
