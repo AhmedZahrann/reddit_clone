@@ -27,7 +27,7 @@ function App() {
   const token = localStorage.getItem("token");
 
   const fetchCommunities = () => {
-    fetch(`${API_URL}/apicommunities`)
+    fetch(`${API_URL}/api/communities`)
       .then((res) => res.json())
       .then((data) => setCommunities(data))
       .catch(() => setCommunities([]));
