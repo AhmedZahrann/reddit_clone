@@ -13,11 +13,13 @@ export default function SignUpPage({ onLoginClick, onSuccess }) {
     setError("");
 
     try {
-      const res = await fetch(`${API_URL}/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password }),
-      });
+      const res = await fetch(`${API_URL}/api/auth/register`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  credentials: "include",
+  body: JSON.stringify({ username, email, password }),
+});
+
 
       const data = await res.json();
       if (!res.ok) {
@@ -26,11 +28,13 @@ export default function SignUpPage({ onLoginClick, onSuccess }) {
       }
 
       // auto login
-      const loginRes = await fetch(`${API_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ emailOrUsername: email, password }),
-      });
+     const loginRes = await fetch(`${API_URL}/api/auth/login`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  credentials: "include",
+  body: JSON.stringify({ emailOrUsername: email, password }),
+});
+
       const loginData = await loginRes.json();
       if (!loginRes.ok) {
         setError(loginData.error || "Login after signup failed");
@@ -40,9 +44,13 @@ export default function SignUpPage({ onLoginClick, onSuccess }) {
       localStorage.setItem("token", loginData.token);
 
       // fetch user data
-      const userRes = await fetch(`${API_URL}/auth/me`, {
-        headers: { Authorization: `Bearer ${loginData.token}` },
-      });
+      const userRes = await fetch(`${API_URL}/api/auth/me`, {
+  credentials: "include",
+  headers: {
+    Authorization: `Bearer ${loginData.token}`,
+  },
+});
+
       const userData = await userRes.json();
       if (userData.error) {
         setError(userData.error);
