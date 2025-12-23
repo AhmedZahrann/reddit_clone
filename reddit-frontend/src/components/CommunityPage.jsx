@@ -8,7 +8,7 @@ const CommunityPage = ({ community, onJoinLeave, onCreatePost, onViewPost, onVot
 
   useEffect(() => {
     if (community?._id) {
-      fetch(`${API_URL}/posts?communityId=${community._id}&sort=${postSort}`)
+      fetch(`${API_URL}/api/posts?communityId=${community._id}&sort=${postSort}`)
         .then(res => res.json())
         .then(data => {
           if (Array.isArray(data)) {
