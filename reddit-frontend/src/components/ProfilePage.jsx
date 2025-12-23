@@ -34,7 +34,7 @@ const ProfilePage = ({ user, onSaveBio, currentUser }) => {
       
       try {
         const userId = user._id || user.id;
-        const res = await fetch(`${API_URL}/auth/user/${userId}`);
+        const res = await fetch(`${API_URL}/api/auth/user/${userId}`);
         const data = await res.json();
         if (res.ok) {
           setProfileUser(data.user);
@@ -66,7 +66,7 @@ const ProfilePage = ({ user, onSaveBio, currentUser }) => {
       try {
         setLoadingPosts(true);
         const userId = user._id || user.id;
-        const res = await fetch(`${API_URL}/posts?creatorId=${userId}`);
+        const res = await fetch(`${API_URL}/api/posts?creatorId=${userId}`);
         const data = await res.json();
         if (res.ok) {
           setUserPosts(data || []);
@@ -91,7 +91,7 @@ const ProfilePage = ({ user, onSaveBio, currentUser }) => {
     try {
       const token = localStorage.getItem("token");
       const userId = user._id || user.id;
-      const res = await fetch(`${API_URL}/auth/follow/${userId}`, {
+      const res = await fetch(`${API_URL}/api/auth/follow/${userId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -101,7 +101,7 @@ const ProfilePage = ({ user, onSaveBio, currentUser }) => {
       if (res.ok) {
         setIsFollowing(!isFollowing);
         // Refresh profile
-        const profileRes = await fetch(`${API_URL}/auth/user/${userId}`);
+        const profileRes = await fetch(`${API_URL}/api/auth/user/${userId}`);
         const profileData = await profileRes.json();
         if (profileRes.ok) {
           setProfileUser(profileData.user);
@@ -142,7 +142,7 @@ const ProfilePage = ({ user, onSaveBio, currentUser }) => {
         return;
       }
 
-      const res = await fetch(`${API_URL}/auth/update-profile`, {
+      const res = await fetch(`${API_URL}/api/auth/update-profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
